@@ -1,14 +1,7 @@
 moif
 ==================
 
-It's a map of your projects, rearrangeable by centers of gravity you define so that, in the best case:
-
-- You won't lose sight of stuff.
-- You'll be able to pick the best thing to do.
-- You'll see relationships between them.
-- You won't be overwhelmed or saddened.
-
-In the worst case, it'll be a bunch of your project names in shapes, arranged in 2D, so that at least it won't be this oppressively long list.
+An app to house dialog-based adventures, specifically ones for my players in our tabletop game.
 
 Installation
 ------------

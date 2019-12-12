@@ -1,4 +1,4 @@
-import { Beat } from '../types';
+import { Beat, Choice, FreeText } from '../types';
 var d3 = require('d3-selection');
 var accessor = require('accessor');
 
@@ -6,7 +6,19 @@ var beatContainer = d3.select('#beat-container');
 var setupArea = beatContainer.select('.setup');
 //var resolutionArea = beatContainer.select('.resolution');
 
-export function renderBeat({ beat }: { beat: Beat }) {
+export function renderBeat({
+  beat,
+  onPlayerAction
+}: {
+  beat: Beat;
+  onPlayerAction: ({
+    choice,
+    freeText
+  }: {
+    choice?: Choice;
+    freeText?: FreeText;
+  }) => void;
+}) {
   setupArea.select('*').remove();
   setupArea.html(beat.desc);
   if (beat.img) {
@@ -32,9 +44,15 @@ export function renderBeat({ beat }: { beat: Beat }) {
         .enter()
         .append('li')
         .classed('choice', true)
-        .text(accessor('desc'));
+        .text(accessor('desc'))
+        .on('click', onChoiceClick);
     } else {
       setupArea.append('textarea').classed('free-text').true;
     }
+  }
+
+  function onChoiceClick(choice: Choice) {
+    d3.select(this).classed('selected', true);
+    onPlayerAction({ choice });
   }
 }

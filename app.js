@@ -4,6 +4,7 @@ var beatFlow = require('./flows/beat-flow');
 var { version } = require('./package.json');
 var { Tablenest } = require('tablenest');
 import { itemMartAnalysts as encounter } from './encounters/item-mart-analysts';
+var probable = require('probable');
 // TODO: Encounter type?
 
 var tablenest = Tablenest(); // TODO: Use seed
@@ -31,7 +32,7 @@ function followRoute({ encounterId, beatId }) {
   }
 
   // TODO: Actually look up encounter in dict of encounters.
-  beatFlow({ beat: encounter[beatId] });
+  beatFlow({ beat: encounter[beatId], routeState, probable });
 }
 
 function reportTopLevelError(msg, url, lineNo, columnNo, error) {

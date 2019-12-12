@@ -1,18 +1,35 @@
+export type NextFn = ({
+  beat,
+  probable,
+  choice,
+  freeText,
+  state
+}: {
+  beat: Beat;
+  probable: any;
+  choice?: Choice;
+  state: any;
+  freeText?: string;
+}) => string;
+
 export interface Choice {
   id: string;
   desc: string;
+  next: NextFn;
 }
 
 export interface FreeText {
   id: string;
   hint: string;
+  next: NextFn;
 }
 
 export interface Beat {
   id: string;
   img?: string;
   imgAlt?: string;
-  desc?: string;
+  desc?: string; // TODO: Transform by state
   question?: string;
   playerOptions?: Array<Choice> | FreeText;
+  resolved: boolean;
 }

@@ -91,6 +91,11 @@ footer {
 .choice {
   margin-bottom: 2em;
   margin-top: 2em;
+  cursor: pointer;
+}
+
+.choice.selected {
+  font-style: bold;
 }
 
 .choice-root {

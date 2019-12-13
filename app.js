@@ -34,7 +34,7 @@ function followRoute({ seed, encounterId, beatIds }) {
 
     let { encounterId, beatId } = rootEncounterRoll();
     // [ beatId ] serialized just ends up being beatId.
-    routeState.addToRoute({ encounterId, beatIds: beatId, random });
+    routeState.addToRoute({ encounterId, beatIds: beatId });
     return;
   }
 
@@ -46,7 +46,7 @@ function followRoute({ seed, encounterId, beatIds }) {
   beatFlow({
     encounterId,
     beatIds: decodedBeatIds,
-    routeState,
+    addToRoute: routeState.addToRoute,
     random
   });
 }

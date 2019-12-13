@@ -17,9 +17,9 @@ export var itemMartAnalysts: Record<string, Beat> = {
         next({ probable, state }) {
           state.itemMartAgentsDismissed = true;
           if (probable.roll(2) === 0) {
-            return 'council';
+            return { beatId: 'discussion', encounterId: 'cultistsMeeting' };
           } else {
-            return 'end';
+            return { beatId: 'end' };
           }
         }
       },
@@ -29,7 +29,7 @@ export var itemMartAnalysts: Record<string, Beat> = {
 
         next({ state }) {
           state.gp = 100;
-          return 'scouting';
+          return { beatId: 'scouting' };
         }
       },
       {
@@ -38,9 +38,18 @@ export var itemMartAnalysts: Record<string, Beat> = {
 
         next({ state }) {
           state.gp = 100;
-          return 'scouting';
+          return { beatId: 'scouting' };
         }
       }
     ]
+  },
+  end: {
+    id: 'end',
+    desc: 'You go back to sleep. The end.'
+  },
+  scouting: {
+    id: 'scouting',
+    desc:
+      '<p>Item Mart has heard that there is an underserved market in the Temple of Elemental Evil.</p>'
   }
 };

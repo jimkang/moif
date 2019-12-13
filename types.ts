@@ -10,7 +10,12 @@ export type NextFn = ({
   choice?: Choice;
   state: any;
   freeText?: string;
-}) => string;
+}) => NextResult;
+
+export interface NextResult {
+  beatId: string;
+  encounterId?: string;
+}
 
 export interface Choice {
   id: string;

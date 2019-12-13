@@ -1,11 +1,14 @@
-import { Encounter, Beat, Choice } from '../types';
+import { Encounter, Beat, Choice, NextResult } from '../types';
 import { renderBeat } from '../dom/render-beat';
 var Probable = require('probable').createProbable;
 
+// TODO: Tool to build this dict.
 import { itemMartAnalysts } from '../encounters/item-mart-analysts';
+import { cultistsMeeting } from '../encounters/cultists-meeting';
 
 var encounterDict: Record<string, Encounter> = {
-  itemMartAnalysts
+  itemMartAnalysts,
+  cultistsMeeting
 };
 
 var state = {};
@@ -13,12 +16,12 @@ var state = {};
 function beatFlow({
   encounterId,
   beatIds,
-  routeState,
+  addToRoute,
   random
 }: {
   encounterId: string;
   beatIds: Array<string>;
-  routeState: any;
+  addToRoute: (object) => void;
   random: () => void;
 }) {
   var probable = Probable({ random });
@@ -27,11 +30,15 @@ function beatFlow({
   renderBeat({ beat, onPlayerAction });
 
   function onPlayerAction({ choice }: { choice: Choice }) {
-    const nextBeatId: string = choice.next({ state, beat, probable, choice });
-    beatIds.push(nextBeatId);
-    routeState.addToRoute({
+    var result: NextResult = choice.next({ state, beat, probable, choice });
+    beatIds.push(result.beatId);
+    var routeUpdates: Record<string, string> = {
       beatIds: beatIds.map(encodeURIComponent).join('|')
-    });
+    };
+    if (result.encounterId) {
+      routeUpdates.encounterId = result.encounterId;
+    }
+    addToRoute(routeUpdates);
   }
 }
 

@@ -301,9 +301,10 @@ footer {
   /*! max-width: 30%; */
   float: left;
   margin: 1em;
+  border-radius: 0.25em;
 }
 
-#beat-container > * {
+.paper {
   background-color: wheat;
   filter: hue-rotate(10deg);
   border-radius: 0.25em;

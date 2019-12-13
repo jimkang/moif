@@ -1,9 +1,11 @@
 import { Beat, Choice, FreeText } from '../types';
 var d3 = require('d3-selection');
 var accessor = require('accessor');
+var TornEdges = require('../torn-edges/index');
 
 var beatContainer = d3.select('#beat-container');
-var setupArea = beatContainer.select('.setup');
+var setupContainer = beatContainer.select('.setup-container');
+var renderTears;
 //var resolutionArea = beatContainer.select('.resolution');
 
 export function renderBeat({
@@ -19,6 +21,14 @@ export function renderBeat({
     freeText?: FreeText;
   }) => void;
 }) {
+  var setupArea = setupContainer.select('.paper');
+  if (setupArea.empty()) {
+    renderTears = TornEdges(setupContainer.node());
+    setupArea = setupContainer.select('.paper');
+  }
+
+  setupContainer.classed('hidden', false);
+
   setupArea.select('*').remove();
   setupArea.html(beat.desc);
   if (beat.img) {
@@ -50,6 +60,8 @@ export function renderBeat({
       setupArea.append('textarea').classed('free-text').true;
     }
   }
+
+  renderTears();
 
   function onChoiceClick(choice: Choice) {
     d3.select(this).classed('selected', true);

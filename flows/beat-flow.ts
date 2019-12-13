@@ -1,5 +1,6 @@
 import { Encounter, Beat, Choice } from '../types';
 import { renderBeat } from '../dom/render-beat';
+var Probable = require('probable').createProbable;
 
 import { itemMartAnalysts } from '../encounters/item-mart-analysts';
 
@@ -13,13 +14,14 @@ function beatFlow({
   encounterId,
   beatIds,
   routeState,
-  probable
+  random
 }: {
   encounterId: string;
   beatIds: Array<string>;
   routeState: any;
-  probable: any;
+  random: () => void;
 }) {
+  var probable = Probable({ random });
   var encounter: Encounter = encounterDict[encounterId];
   var beat: Beat = encounter[beatIds[beatIds.length - 1]];
   renderBeat({ beat, onPlayerAction });

@@ -3,14 +3,7 @@ var RouteState = require('route-state');
 var beatFlow = require('./flows/beat-flow');
 var { version } = require('./package.json');
 var { Tablenest } = require('tablenest');
-var probable = require('probable');
-// TODO: Encounter type?
-
-var tablenest = Tablenest(); // TODO: Use seed
-
-var rootEncounterRoll = tablenest({
-  root: [[1, { encounterId: 'itemMartAnalysts', beatId: 'doorKnock' }]]
-});
+var seedrandom = require('seedrandom');
 
 var routeState = RouteState({
   followRoute,
@@ -24,11 +17,24 @@ var routeState = RouteState({
   routeState.routeFromHash();
 })();
 
-function followRoute({ encounterId, beatIds }) {
+function followRoute({ seed, encounterId, beatIds }) {
+  if (!seed) {
+    seedWithDate();
+    return;
+  }
+
+  var random = seedrandom(seed);
+
   if (!encounterId) {
+    var tablenest = Tablenest({ random });
+
+    var rootEncounterRoll = tablenest({
+      root: [[1, { encounterId: 'itemMartAnalysts', beatId: 'doorKnock' }]]
+    });
+
     let { encounterId, beatId } = rootEncounterRoll();
     // [ beatId ] serialized just ends up being beatId.
-    routeState.addToRoute({ encounterId, beatIds: beatId });
+    routeState.addToRoute({ encounterId, beatIds: beatId, random });
     return;
   }
 
@@ -41,8 +47,12 @@ function followRoute({ encounterId, beatIds }) {
     encounterId,
     beatIds: decodedBeatIds,
     routeState,
-    probable
+    random
   });
+}
+
+function seedWithDate() {
+  routeState.addToRoute({ seed: new Date().toISOString() });
 }
 
 function reportTopLevelError(msg, url, lineNo, columnNo, error) {

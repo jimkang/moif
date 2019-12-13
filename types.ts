@@ -31,7 +31,6 @@ export interface Beat {
   desc?: string; // TODO: Transform by state
   question?: string;
   playerOptions?: Array<Choice> | FreeText;
-  resolved: boolean;
 }
 
 export type Encounter = Record<string, Beat>;

@@ -2,7 +2,6 @@ import { Beat } from '../types';
 
 export var itemMartAnalysts: Record<string, Beat> = {
   doorKnock: {
-    resolved: false,
     id: 'doorKnock',
     img: 'https://smidgeo.com/bots/media/slop-cube4.gif',
     imgAlt: 'A picture of two guys',
@@ -15,9 +14,8 @@ export var itemMartAnalysts: Record<string, Beat> = {
         id: 'goAway',
         desc: 'Tell them to go away.',
 
-        next({ beat, probable, state }) {
+        next({ probable, state }) {
           state.itemMartAgentsDismissed = true;
-          beat.resolved = true;
           if (probable.roll(2) === 0) {
             return 'council';
           } else {
@@ -29,9 +27,8 @@ export var itemMartAnalysts: Record<string, Beat> = {
         id: 'askFor100',
         desc: 'Ask for 100 gp.',
 
-        next({ beat, state }) {
+        next({ state }) {
           state.gp = 100;
-          beat.resolved = true;
           return 'scouting';
         }
       },
@@ -39,9 +36,8 @@ export var itemMartAnalysts: Record<string, Beat> = {
         id: 'openDoor',
         desc: 'Open the door.',
 
-        next({ beat, state }) {
+        next({ state }) {
           state.gp = 100;
-          beat.resolved = true;
           return 'scouting';
         }
       }

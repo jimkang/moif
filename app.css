@@ -1,6 +1,6 @@
 body {
-  font-size: 24px;
-  font-family: Ubuntu, roboto, noto, segoe ui, arial, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, sans-serif;
+  font-size: 30px;
+  font-family: malaga, serif;
   color: #666;
   background-color: #fff;
   margin-bottom: 2em;
@@ -8,6 +8,10 @@ body {
   flex-wrap: wrap;
   align-items: center;
   flex-direction: column;
+}
+
+h1, h2, h3 {
+  font-family: ode;
 }
 
 .dark {
@@ -90,6 +94,8 @@ footer {
 }
 
 .choice {
+  font-family: ode;
+  font-size: 48px;
   margin-bottom: 2em;
   margin-top: 2em;
   cursor: pointer;
@@ -99,8 +105,9 @@ footer {
   font-style: bold;
 }
 
-.choice-root {
+.choices {
   padding-left: 0;
+  list-style-type: none;
 }
 
 .dialogue-text {
@@ -140,7 +147,6 @@ footer {
 }
 
 body.fantasy {
-  font-family: 'Vesper Libre';
   background-color: hsl(72, 24%, 55%);
   color: hsla(153, 0%, 24%,1);
 }
@@ -223,11 +229,6 @@ body.fantasy {
   stroke-width: 2;
 }
 
-.fantasy .problem .dialogue-text {
-  font-family: 'Eagle Lake', serif;
-  font-size: 1.5em;
-}
-
 .fantasy .heading {
   font-size: 1.5em;
 }
@@ -302,6 +303,7 @@ footer {
   float: left;
   margin: 1em;
   border-radius: 0.25em;
+  box-shadow: 0px 0px 8px 0px hsla(0,0%,0%,0.5);
 }
 
 .paper {

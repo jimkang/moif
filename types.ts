@@ -33,3 +33,5 @@ export interface Beat {
   playerOptions?: Array<Choice> | FreeText;
   resolved: boolean;
 }
+
+export type Encounter = Record<string, Beat>;

@@ -1,22 +1,35 @@
-import { Beat, Choice } from '../types';
+import { Encounter, Beat, Choice } from '../types';
 import { renderBeat } from '../dom/render-beat';
+
+import { itemMartAnalysts } from '../encounters/item-mart-analysts';
+
+var encounterDict: Record<string, Encounter> = {
+  itemMartAnalysts
+};
 
 var state = {};
 
 function beatFlow({
-  beat,
+  encounterId,
+  beatIds,
   routeState,
   probable
 }: {
-  beat: Beat;
+  encounterId: string;
+  beatIds: Array<string>;
   routeState: any;
   probable: any;
 }) {
+  var encounter: Encounter = encounterDict[encounterId];
+  var beat: Beat = encounter[beatIds[beatIds.length - 1]];
   renderBeat({ beat, onPlayerAction });
 
   function onPlayerAction({ choice }: { choice: Choice }) {
-    const playerMove: string = choice.next({ state, beat, probable, choice });
-    routeState.addToRoute({ playerMove });
+    const nextBeatId: string = choice.next({ state, beat, probable, choice });
+    beatIds.push(nextBeatId);
+    routeState.addToRoute({
+      beatIds: beatIds.map(encodeURIComponent).join('|')
+    });
   }
 }
 

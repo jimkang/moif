@@ -3,7 +3,6 @@ var RouteState = require('route-state');
 var beatFlow = require('./flows/beat-flow');
 var { version } = require('./package.json');
 var { Tablenest } = require('tablenest');
-import { itemMartAnalysts as encounter } from './encounters/item-mart-analysts';
 var probable = require('probable');
 // TODO: Encounter type?
 
@@ -25,14 +24,25 @@ var routeState = RouteState({
   routeState.routeFromHash();
 })();
 
-function followRoute({ encounterId, beatId }) {
+function followRoute({ encounterId, beatIds }) {
   if (!encounterId) {
-    routeState.addToRoute(rootEncounterRoll());
+    let { encounterId, beatId } = rootEncounterRoll();
+    // [ beatId ] serialized just ends up being beatId.
+    routeState.addToRoute({ encounterId, beatIds: beatId });
     return;
   }
 
-  // TODO: Actually look up encounter in dict of encounters.
-  beatFlow({ beat: encounter[beatId], routeState, probable });
+  var decodedBeatIds = [];
+  if (beatIds) {
+    decodedBeatIds = beatIds.split('|').map(decodeURIComponent);
+  }
+
+  beatFlow({
+    encounterId,
+    beatIds: decodedBeatIds,
+    routeState,
+    probable
+  });
 }
 
 function reportTopLevelError(msg, url, lineNo, columnNo, error) {

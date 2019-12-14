@@ -1,26 +1,27 @@
-var d3 = require("d3-selection");
-var drawTear = require("./draw-tear");
+var d3 = require('d3-selection');
+var drawTear = require('./draw-tear');
 
 const tearWidth = 5;
 
 function TornEdges(parentEl) {
   var parentSel = d3.select(parentEl);
   parentSel
-    .append("svg")
-    .classed("paper-board", true)
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .append("foreignObject")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("x", tearWidth)
-    .attr("y", tearWidth)
+    .append('svg')
+    .classed('paper-board', true)
+    // 100% width works on Firefox, but not Chrome.
+    .attr('width', '1000')
+    .attr('height', '100%')
+    .append('foreignObject')
+    .attr('width', '100%')
+    .attr('height', '100%')
+    .attr('x', tearWidth)
+    .attr('y', tearWidth)
     // Using the namespace when appending an html element to a foreignObject is
     // incredibly important. Without it, a div will not size itself correctly for its contents.
-    .append("xhtml:div")
-    .classed("paper-container", true)
-    .append("xhtml:div")
-    .classed("paper", true);
+    .append('xhtml:div')
+    .classed('paper-container', true)
+    .append('xhtml:div')
+    .classed('paper', true);
 
   return drawTornEdges;
 
@@ -30,33 +31,33 @@ function TornEdges(parentEl) {
     setTimeout(callRenderTears, 400);
 
     function callRenderTears() {
-      renderTears(parentSel.selectAll(".paper-board"));
+      renderTears(parentSel.selectAll('.paper-board'));
     }
   }
 }
 
 function renderTears(textBoards) {
   textBoards
-    .selectAll("foreignObject")
-    .attr("width", getForeignObjectWidth)
-    .attr("height", getForeignObjectHeight);
+    .selectAll('foreignObject')
+    .attr('width', getForeignObjectWidth)
+    .attr('height', getForeignObjectHeight);
 
   // Changing the width of the board changes the width of the foreignObjects, as they
   // are initially set to 100%. So, do that before changing the width of the board.
-  textBoards.attr("width", getBoardWidth).attr("height", getBoardHeight);
+  textBoards.attr('width', getBoardWidth).attr('height', getBoardHeight);
 
   // Use path directions as data.
   var paths = textBoards
-    .selectAll(".tear-path")
+    .selectAll('.tear-path')
     .data([[0, -1], [0, 1], [-1, 0], [1, 0]]);
 
   var updatePaths = paths
     .enter()
-    .append("path")
-    .classed("tear-path", true)
+    .append('path')
+    .classed('tear-path', true)
     .merge(paths);
 
-  updatePaths.attr("d", getPathDirections).attr("transform", getPathTransform);
+  updatePaths.attr('d', getPathDirections).attr('transform', getPathTransform);
 
   function getBoardWidth() {
     return getWidthOfTextElement(d3.select(this)) + 2 * tearWidth;
@@ -80,9 +81,9 @@ function renderTears(textBoards) {
       maxThickness: tearWidth
     };
 
-    var lengthAttr = "height";
+    var lengthAttr = 'height';
     if (direction[0] === 0) {
-      lengthAttr = "width";
+      lengthAttr = 'width';
     }
     tearOpts.length = d3.select(this.parentNode).attr(lengthAttr);
 
@@ -93,10 +94,10 @@ function renderTears(textBoards) {
     var x = 0;
     var y = 0;
     if (direction[0] > 0) {
-      x = d3.select(this.parentNode).attr("width") - tearWidth - 1;
+      x = d3.select(this.parentNode).attr('width') - tearWidth - 1;
     }
     if (direction[1] > 0) {
-      y = d3.select(this.parentNode).attr("height") - tearWidth - 1;
+      y = d3.select(this.parentNode).attr('height') - tearWidth - 1;
     }
     // Safari needs the -1; Chrome and Firefox do not.
     return `translate(${x}, ${y})`;
@@ -104,12 +105,12 @@ function renderTears(textBoards) {
 }
 
 function getHeightOfTextElement(parentSel) {
-  var textContainer = parentSel.select(".paper");
+  var textContainer = parentSel.select('.paper');
   return textContainer.node().clientHeight;
 }
 
 function getWidthOfTextElement(parentSel) {
-  var textContainer = parentSel.select(".paper");
+  var textContainer = parentSel.select('.paper');
   return textContainer.node().clientWidth;
 }
 

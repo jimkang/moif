@@ -9,9 +9,6 @@ PLUGIN_SWITCH = -p [tsify]
 pushall: sync
 	git push origin master
 
-deploy:
-	make build && git commit -a -m"Build" && make pushall
-
 run:
 	wzrd app.js:index.js -- \
 		-d \
@@ -27,7 +24,7 @@ prettier:
 
 sync:
 	rsync -a $(HOMEDIR)/ $(USER)@$(SERVER):/$(APPDIR) --exclude node_modules/ \
-		--exclude/.git --omit-dir-times --no-perms
+		--exclude .git/ --omit-dir-times --no-perms
 
 deploy:
 	npm version patch && make build && git commit -a -m"Build." && make pushall

@@ -29,7 +29,8 @@ function followRoute({ seed, encounterId, beatIds }) {
     var tablenest = Tablenest({ random });
 
     var rootEncounterRoll = tablenest({
-      root: [[1, { encounterId: 'itemMartAnalysts', beatId: 'doorKnock' }]]
+      //root: [[1, { encounterId: 'itemMartAnalysts', beatId: 'doorKnock' }]]
+      root: [[1, { encounterId: 'cultistsMeeting', beatId: 'discussion' }]]
     });
 
     let { encounterId, beatId } = rootEncounterRoll();

@@ -17,13 +17,9 @@ export var itemMartAnalysts: Record<string, Beat> = {
           condition({ state }) {
             return !state.paymentAccepted;
           },
-          next({ probable, state }) {
+          next({ state }) {
             state.itemMartAgentsDismissed = true;
-            if (probable.roll(2) === 0) {
-              return { beatId: 'discussion', encounterId: 'cultistsMeeting' };
-            } else {
-              return { beatId: 'end' };
-            }
+            return { beatId: 'sulk' };
           }
         },
         {
@@ -35,9 +31,9 @@ export var itemMartAnalysts: Record<string, Beat> = {
           next({ state, probable }): NextResult {
             state.itemMartHagglingDone = true;
             const check = probable.rollDie(20);
-            var resolutionText = `[Charisma check: ${check}]`;
+            var resolutionText = `[CHA check: ${check}]`;
             var nextBeatId = 'doorKnock';
-            if (check <= 16) {
+            if (check <= 15) {
               state.gp += 100;
               resolutionText += ' They give you 100 gp.';
               state.paymentAccepted = true;
@@ -144,7 +140,12 @@ Service Associate I."</p>
   analystGoodbye: {
     id: 'analystGoodbye',
     desc: `"It was a pleasure working with you, Mogredh. We'll let you know how things pan out with the kiosk. And if things don't work out with the "adventuring", there may be an opportunity for you in Management in this region very soon [wink]!"
-<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`,
+<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`
+  },
+  sulk: {
+    id: 'sulk',
+    desc:
+      "You shut the door and go back to sulking. It's a good sulk. The end.",
     endOfEncounter: true
   }
 };

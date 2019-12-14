@@ -1,5 +1,8 @@
 var easyRequest = require('easy-browser-request');
 
+const token =
+  'xoxp-20738496321-20739644710-863370240609-d62135f87de2facbf7d2b54836e70412';
+
 export async function sendEncounter({
   encounterId,
   beatIds,
@@ -18,7 +21,7 @@ export async function sendEncounter({
   );
   var { error, body } = await easyRequest({
     method: 'GET',
-    url: `https://slack.com/api/chat.postMessage?token=xoxp-20738496321-20739644710-860838805618-cdcd875f195a49645c7c0f656d0173c3&channel=adventure-results&text=${message}.&pretty=1`,
+    url: `https://slack.com/api/chat.postMessage?token=${token}&channel=adventure-results&text=${message}.&pretty=1`,
     json: true
   });
   if (error) {

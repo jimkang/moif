@@ -21,7 +21,7 @@ export function renderResolution({
 
   resolutionContainer.classed('hidden', false);
 
-  resolutionArea.select('*').remove();
+  resolutionArea.selectAll('*').remove();
   var resolutionDiv = resolutionArea.append('div');
   resolutionDiv.html(resolutionText);
   if (onAcknowledge) {

@@ -28,7 +28,7 @@ export function renderBeat({
 
   setupContainer.classed('hidden', false);
 
-  setupArea.select('*').remove();
+  setupArea.selectAll('*').remove();
   setupArea.html(beat.desc);
   if (beat.img) {
     setupArea

@@ -1,7 +1,7 @@
 var easyRequest = require('easy-browser-request');
 
 const token =
-  'xoxp-20738496321-20739644710-863370240609-d62135f87de2facbf7d2b54836e70412';
+  'xoxp-20738496321-20739644710-860876563122-c81480a6aa774ffb68152a54bc672a63';
 
 export async function sendEncounter({
   encounterId,

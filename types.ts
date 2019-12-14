@@ -12,21 +12,26 @@ export type NextFn = ({
   freeText?: string;
 }) => NextResult;
 
+export type ConditionFn = ({ state }: { state: any }) => boolean;
+
 export interface NextResult {
   beatId: string;
   encounterId?: string;
+  resolutionText?: string;
 }
 
 export interface Choice {
   id: string;
   desc: string;
   next: NextFn;
+  condition?: ConditionFn;
 }
 
 export interface FreeText {
   id: string;
   hint: string;
   next: NextFn;
+  condition?: ConditionFn;
 }
 
 export interface Beat {

@@ -1,5 +1,6 @@
 import { Encounter, Beat, Choice, NextResult } from '../types';
 import { renderBeat } from '../dom/render-beat';
+import { renderResolution } from '../dom/render-resolution';
 var Probable = require('probable').createProbable;
 
 // TODO: Tool to build this dict.
@@ -27,18 +28,48 @@ function beatFlow({
   var probable = Probable({ random });
   var encounter: Encounter = encounterDict[encounterId];
   var beat: Beat = encounter[beatIds[beatIds.length - 1]];
+  updateBeat(beat);
+
   renderBeat({ beat, onPlayerAction });
 
   function onPlayerAction({ choice }: { choice: Choice }) {
     var result: NextResult = choice.next({ state, beat, probable, choice });
     beatIds.push(result.beatId);
-    var routeUpdates: Record<string, string> = {
-      beatIds: beatIds.map(encodeURIComponent).join('|')
-    };
-    if (result.encounterId) {
-      routeUpdates.encounterId = result.encounterId;
+
+    if (result.resolutionText) {
+      renderResolution({
+        resolutionText: result.resolutionText,
+        onAcknowledge: moveOn
+      });
+      return;
+    } else {
+      moveOn();
     }
-    addToRoute(routeUpdates);
+
+    function moveOn() {
+      var routeUpdates: Record<string, string> = {
+        beatIds: beatIds.map(encodeURIComponent).join('|')
+      };
+      if (result.encounterId) {
+        routeUpdates.encounterId = result.encounterId;
+      }
+      addToRoute(routeUpdates);
+    }
+  }
+}
+
+function updateBeat(beat: Beat) {
+  if (Array.isArray(beat.playerOptions)) {
+    beat.playerOptions = (beat.playerOptions as Array<Choice>).filter(
+      choiceConditionsMet
+    );
+  }
+
+  function choiceConditionsMet(choice: Choice) {
+    if (choice.condition) {
+      return choice.condition({ state });
+    }
+    return true;
   }
 }
 

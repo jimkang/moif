@@ -1,4 +1,4 @@
-import { Beat } from '../types';
+import { Beat, NextResult } from '../types';
 
 export var itemMartAnalysts: Record<string, Beat> = {
   doorKnock: {
@@ -13,7 +13,9 @@ export var itemMartAnalysts: Record<string, Beat> = {
       {
         id: 'goAway',
         desc: 'Tell them to go away.',
-
+        condition({ state }) {
+          return !state.paymentAccepted;
+        },
         next({ probable, state }) {
           state.itemMartAgentsDismissed = true;
           if (probable.roll(2) === 0) {
@@ -26,16 +28,28 @@ export var itemMartAnalysts: Record<string, Beat> = {
       {
         id: 'askFor100',
         desc: 'Ask for 100 gp.',
-
-        next({ state }) {
-          state.gp = 100;
-          return { beatId: 'scouting' };
+        condition({ state }) {
+          return !state.itemMartHagglingDone;
+        },
+        next({ state, probable }): NextResult {
+          state.itemMartHagglingDone = true;
+          const check = probable.rollDie(20);
+          var resolutionText = `[Charmisma check roll: ${check}]`;
+          var nextBeatId = 'doorKnock';
+          if (check <= 16) {
+            state.gp = 100;
+            resolutionText += ' They give you 100gp';
+            state.paymentAccepted = true;
+            nextBeatId = 'scouting';
+          } else {
+            resolutionText += ` "Sorry. That's not in our budget."`;
+          }
+          return { beatId: nextBeatId, resolutionText };
         }
       },
       {
         id: 'inviteIn',
         desc: 'Invite them in.',
-
         next({ state }) {
           state.gp = 100;
           return { beatId: 'scouting' };

@@ -5,7 +5,7 @@ export var itemMartAnalysts: Record<string, Beat> = {
     id: 'doorKnock',
     img: 'https://smidgeo.com/bots/media/slop-cube4.gif',
     imgAlt: 'A picture of two guys',
-    desc: `<p>Fred and Joe from Item Mart are at the door of your inn room!</p>
+    desc: `Fred and Joe from Item Mart are at the door of your inn room!
           <p>They describe themselves as Growth Opportunity Analysts. They are interested in your experiences with the Temple of Elemental Evil.
           <p>They mention that they want to pay you a 50 gp consulting fee.</p>`,
     question: 'What do you do?',
@@ -66,7 +66,7 @@ export var itemMartAnalysts: Record<string, Beat> = {
   },
   scouting: {
     id: 'scouting',
-    desc: `<p>"We've seen that the Temple is a popular destination for high income individuals! At the same time, the supply of convenience &mdash; and luxury &mdash; goods is low," Fred explains.</p>
+    desc: `"We've seen that the Temple is a popular destination for high income individuals! At the same time, the supply of convenience &mdash; and luxury &mdash; goods is low," Fred explains.
 <p>Joe continues "Now, Mogredh, you and your team have spent considerable time scouting the Temple. We're very excited about the unique perspective you have as a Temple SME with a background at Item Mart as a 
 <em>[glances at paper]</em>
 Service Associate I."</p>
@@ -101,7 +101,7 @@ Service Associate I."</p>
   },
   stock: {
     id: 'stock',
-    desc: `<p>"We have a budget of 300 gp for this venture. We'd love to get your opinion on spend prioritization!"</p>
+    desc: `"We have a budget of 300 gp for this venture. We'd love to get your opinion on spend prioritization!"
     <p>Fred holds unrolls the budget scroll, which reads as follows:</p>
 <ul>
   <li>Climbing supply box (ropes, spikes, grappling hooks): 20 gp</li>
@@ -128,6 +128,22 @@ Service Associate I."</p>
   },
   consignment: {
     id: 'consignment',
-    desc: 'BTW, would you like to sell anything for consignment?'
+    desc: '"BTW, we have a consignment slot open at the kiosk!"',
+    question: '"Is there anything you\'d like to sell? Item Mart takes 20%."',
+    playerOptions: {
+      freeText: {
+        id: 'consignmentItem',
+        hint:
+          "Write down what you'd like to give to them to sell and at what price.",
+        next() {
+          return { beatId: 'analystGoodbye' };
+        }
+      }
+    }
+  },
+  analystGoodbye: {
+    id: 'analystGoodbye',
+    desc: `"It was a pleasure working with you, Mogredh. We'll let you know how things pan out with the kiosk. And if things don't work out with the "adventuring", there may be an opportunity for you in Management in this region very soon [wink]!"
+<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`
   }
 };

@@ -3,7 +3,7 @@ import { Beat, NextResult } from '../types';
 export var itemMartAnalysts: Record<string, Beat> = {
   doorKnock: {
     id: 'doorKnock',
-    img: 'https://smidgeo.com/bots/media/slop-cube4.gif',
+    img: 'media/fred-and-joe.jpg',
     imgAlt: 'A picture of two guys',
     desc: `Fred and Joe from Item Mart are at the door of your inn room!
           <p>They describe themselves as Growth Opportunity Analysts. They are interested in your experiences with the Temple of Elemental Evil.

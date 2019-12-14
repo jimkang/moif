@@ -140,7 +140,8 @@ Service Associate I."</p>
   analystGoodbye: {
     id: 'analystGoodbye',
     desc: `"It was a pleasure working with you, Mogredh. We'll let you know how things pan out with the kiosk. And if things don't work out with the "adventuring", there may be an opportunity for you in Management in this region very soon [wink]!"
-<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`
+<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`,
+    endOfEncounter: true
   },
   sulk: {
     id: 'sulk',

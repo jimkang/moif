@@ -5,8 +5,8 @@ export var itemMartAnalysts: Record<string, Beat> = {
     id: 'doorKnock',
     img: 'https://smidgeo.com/bots/media/slop-cube4.gif',
     imgAlt: 'A picture of two guys',
-    desc: `<p>Fred and Joe are at the door of your inn room.</p>
-          <p>They describe themselves as Growth Opportunity Analysts for Item Mart. They are interested in your experiences with the Temple of Elemental Evil.
+    desc: `<p>Fred and Joe from Item Mart are at the door of your inn room!</p>
+          <p>They describe themselves as Growth Opportunity Analysts. They are interested in your experiences with the Temple of Elemental Evil.
           <p>They mention that they want to pay you a 50 gp consulting fee.</p>`,
     question: 'What do you do?',
     playerOptions: [
@@ -34,15 +34,15 @@ export var itemMartAnalysts: Record<string, Beat> = {
         next({ state, probable }): NextResult {
           state.itemMartHagglingDone = true;
           const check = probable.rollDie(20);
-          var resolutionText = `[Charmisma check roll: ${check}]`;
+          var resolutionText = `[Charisma check roll: ${check}]`;
           var nextBeatId = 'doorKnock';
           if (check <= 16) {
-            state.gp = 100;
-            resolutionText += ' They give you 100gp';
+            state.gp += 100;
+            resolutionText += ' They give you 100 gp.';
             state.paymentAccepted = true;
             nextBeatId = 'scouting';
           } else {
-            resolutionText += ` "Sorry. That's not in our budget."`;
+            resolutionText += ' "Sorry. That\'s not in our budget."';
           }
           return { beatId: nextBeatId, resolutionText };
         }
@@ -51,8 +51,9 @@ export var itemMartAnalysts: Record<string, Beat> = {
         id: 'inviteIn',
         desc: 'Invite them in.',
         next({ state }) {
-          state.gp = 100;
-          return { beatId: 'scouting' };
+          var resolutionText = 'They give you 50 gp.';
+          state.gp += 50;
+          return { beatId: 'scouting', resolutionText };
         }
       }
     ]

@@ -12,7 +12,9 @@ var encounterDict: Record<string, Encounter> = {
   cultistsMeeting
 };
 
-var state = {};
+var state = {
+  gp: 0
+};
 
 function beatFlow({
   encounterId,

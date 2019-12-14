@@ -10,7 +10,8 @@ function TornEdges(parentEl) {
     .classed('paper-board', true)
     // 100% width works on Firefox, but not Chrome.
     .attr('width', '1000')
-    .attr('height', '100%')
+    // 100% height works on Firefox, but not on Mobile Safari.
+    .attr('height', '5000')
     .append('foreignObject')
     .attr('width', '100%')
     .attr('height', '100%')

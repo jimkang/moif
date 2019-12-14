@@ -3,7 +3,7 @@ import { renderBeat } from '../dom/render-beat';
 import { renderResolution } from '../dom/render-resolution';
 var Probable = require('probable').createProbable;
 import { sendEncounter } from '../tasks/send-encounter';
-import { to } from 'await-to-js';
+var ep = require('errorback-promise');
 
 // TODO: Tool to build this dict.
 import { itemMartAnalysts } from '../encounters/item-mart-analysts';
@@ -38,18 +38,16 @@ async function beatFlow({
   renderBeat({ beat, onPlayerAction });
 
   if (beat.endOfEncounter) {
-    let [error] = await to(
-      sendEncounter({
-        encounterId,
-        beatIds,
-        state,
-        actionLog
-      })
-    );
+    let { error } = await ep(sendEncounter, {
+      encounterId,
+      beatIds,
+      state,
+      actionLog
+    });
     let resolutionText =
       'End of encounter. Your feats were sent to the DM! Nice work.';
     if (error) {
-      resolutionText = `Doh! This would normally be the end, but there was an error while sending encounter report to the DM. Clear the stuff after the # and try again. Error message: ${error.message}`;
+      resolutionText = `Doh! This would normally be the end, but there was an error while sending encounter report to the DM. <a href="https://jimkang.com/moif">Try again?</a> Error message: <pre>${error.message}</pre>`;
     }
     renderResolution({ resolutionText });
   }

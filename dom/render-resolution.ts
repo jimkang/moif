@@ -11,7 +11,7 @@ export function renderResolution({
   onAcknowledge
 }: {
   resolutionText: string;
-  onAcknowledge: () => void;
+  onAcknowledge?: () => void;
 }) {
   var resolutionArea = resolutionContainer.select('.paper');
   if (resolutionArea.empty()) {
@@ -24,11 +24,13 @@ export function renderResolution({
   resolutionArea.select('*').remove();
   var resolutionDiv = resolutionArea.append('div');
   resolutionDiv.html(resolutionText);
-  resolutionArea
-    .append('button')
-    .classed('continue-button', true)
-    .text('Continue.')
-    .on('click', onAcknowledgeClick);
+  if (onAcknowledge) {
+    resolutionArea
+      .append('button')
+      .classed('continue-button', true)
+      .text('Continue.')
+      .on('click', onAcknowledgeClick);
+  }
 
   renderTears();
 

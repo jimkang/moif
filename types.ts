@@ -1,16 +1,13 @@
-export type NextFn = ({
-  beat,
-  probable,
-  choice,
-  freeText,
-  state
-}: {
+export interface BeatOpKit {
   beat: Beat;
-  probable: any;
+  probable?: any;
   choice?: Choice;
-  state: any;
   freeText?: FreeText;
-}) => NextResult;
+  state?: any;
+  actionLog: Array<any>;
+}
+
+export type NextFn = (BeatOpKit) => NextResult;
 
 export type ConditionFn = ({ state }: { state: any }) => boolean;
 
@@ -47,6 +44,7 @@ export interface Beat {
   desc?: string; // TODO: Transform by state
   question?: string;
   playerOptions?: PlayerOptions;
+  endOfEncounter?: boolean;
 }
 
 export type Encounter = Record<string, Beat>;

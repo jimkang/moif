@@ -6,7 +6,6 @@ var TornEdges = require('../torn-edges/index');
 var beatContainer = d3.select('#beat-container');
 var setupContainer = beatContainer.select('.setup-container');
 var renderTears;
-//var resolutionArea = beatContainer.select('.resolution');
 
 export function renderBeat({
   beat,

@@ -27,7 +27,7 @@ prettier:
 
 sync:
 	rsync -a $(HOMEDIR)/ $(USER)@$(SERVER):/$(APPDIR) --exclude node_modules/ \
-		--exclude art/ --exclude/.git --omit-dir-times --no-perms
+		--exclude/.git --omit-dir-times --no-perms
 
 deploy:
 	npm version patch && make build && git commit -a -m"Build." && make pushall

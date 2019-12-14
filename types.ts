@@ -9,7 +9,7 @@ export type NextFn = ({
   probable: any;
   choice?: Choice;
   state: any;
-  freeText?: string;
+  freeText?: FreeText;
 }) => NextResult;
 
 export type ConditionFn = ({ state }: { state: any }) => boolean;
@@ -31,7 +31,13 @@ export interface FreeText {
   id: string;
   hint: string;
   next: NextFn;
+  value?: string;
   condition?: ConditionFn;
+}
+
+export interface PlayerOptions {
+  choices?: Array<Choice>;
+  freeText?: FreeText;
 }
 
 export interface Beat {
@@ -40,7 +46,7 @@ export interface Beat {
   imgAlt?: string;
   desc?: string; // TODO: Transform by state
   question?: string;
-  playerOptions?: Array<Choice> | FreeText;
+  playerOptions?: PlayerOptions;
 }
 
 export type Encounter = Record<string, Beat>;

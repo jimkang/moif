@@ -1,5 +1,4 @@
 var d3 = require('d3-selection');
-var accessor = require('accessor');
 var TornEdges = require('../torn-edges/index');
 
 var beatContainer = d3.select('#beat-container');
@@ -27,7 +26,8 @@ export function renderResolution({
   resolutionDiv.html(resolutionText);
   resolutionArea
     .append('button')
-    .text('Acknowledge.')
+    .classed('continue-button', true)
+    .text('Continue.')
     .on('click', onAcknowledgeClick);
 
   renderTears();

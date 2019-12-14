@@ -45,19 +45,33 @@ export function renderBeat({
       .text(beat.question);
   }
   if (beat.playerOptions) {
-    if (Array.isArray(beat.playerOptions)) {
+    if (beat.playerOptions.choices) {
       let choiceRoot = setupArea.append('ul').classed('choices', true);
       let choices = choiceRoot
         .selectAll('.choice')
-        .data(beat.playerOptions, accessor());
+        .data(beat.playerOptions.choices, accessor());
       choices
         .enter()
         .append('li')
         .classed('choice', true)
         .text(accessor('desc'))
         .on('click', onChoiceClick);
-    } else {
-      setupArea.append('textarea').classed('free-text').true;
+    } else if (beat.playerOptions.freeText) {
+      let freeTextContainer = setupArea
+        .append('div')
+        .classed('free-text-container', true)
+        .classed('centered-col', true);
+      freeTextContainer
+        .append('div')
+        .classed('free-text-hint', true)
+        .text(beat.playerOptions.freeText.hint);
+      freeTextContainer.append('textarea').classed('free-text', true);
+      freeTextContainer
+        .append('button')
+        .text('Done')
+        .classed('continue-button', true)
+        .classed('free-text-button', true)
+        .on('click', onFreeTextDoneClick);
     }
   }
 
@@ -66,5 +80,12 @@ export function renderBeat({
   function onChoiceClick(choice: Choice) {
     d3.select(this).classed('selected', true);
     onPlayerAction({ choice });
+  }
+
+  function onFreeTextDoneClick() {
+    beat.playerOptions.freeText.value = setupArea
+      .select('.free-text')
+      .node().value;
+    onPlayerAction({ freeText: beat.playerOptions.freeText });
   }
 }

@@ -1,4 +1,4 @@
-import { Encounter, Beat, Choice, NextResult } from '../types';
+import { Encounter, Beat, Choice, FreeText, NextResult } from '../types';
 import { renderBeat } from '../dom/render-beat';
 import { renderResolution } from '../dom/render-resolution';
 var Probable = require('probable').createProbable;
@@ -15,6 +15,7 @@ var encounterDict: Record<string, Encounter> = {
 var state = {
   gp: 0
 };
+var actionLog = [];
 
 function beatFlow({
   encounterId,
@@ -34,9 +35,23 @@ function beatFlow({
 
   renderBeat({ beat, onPlayerAction });
 
-  function onPlayerAction({ choice }: { choice: Choice }) {
-    var result: NextResult = choice.next({ state, beat, probable, choice });
+  function onPlayerAction({
+    choice,
+    freeText
+  }: {
+    choice: Choice;
+    freeText: FreeText;
+  }) {
+    var result: NextResult;
+    if (choice) {
+      result = choice.next({ state, beat, probable, choice });
+    } else if (freeText) {
+      result = freeText.next({ state, beat, probable, freeText });
+    }
     beatIds.push(result.beatId);
+    actionLog.push(choice || freeText);
+    actionLog.push(result);
+    console.log('actionLog', JSON.stringify(actionLog, null, 2));
 
     if (result.resolutionText) {
       renderResolution({
@@ -61,11 +76,12 @@ function beatFlow({
 }
 
 function updateBeat(beat: Beat) {
-  if (Array.isArray(beat.playerOptions)) {
-    beat.playerOptions = (beat.playerOptions as Array<Choice>).filter(
-      choiceConditionsMet
-    );
+  if (beat.playerOptions && beat.playerOptions.choices) {
+    beat.playerOptions.choices = (beat.playerOptions.choices as Array<
+      Choice
+    >).filter(choiceConditionsMet);
   }
+  // TODO: Also filter freeText
 
   function choiceConditionsMet(choice: Choice) {
     if (choice.condition) {

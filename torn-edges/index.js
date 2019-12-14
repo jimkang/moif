@@ -27,7 +27,7 @@ function TornEdges(parentEl) {
   function drawTornEdges() {
     // This must go after the .paper contents are updated.
     // Hack: If this is called immediately, the clientHeight will not be correct yet.
-    setTimeout(callRenderTears, 300);
+    setTimeout(callRenderTears, 400);
 
     function callRenderTears() {
       renderTears(parentSel.selectAll(".paper-board"));

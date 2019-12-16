@@ -9,7 +9,8 @@ function TornEdges(parentEl) {
     .append('svg')
     .classed('paper-board', true)
     // 100% width works on Firefox, but not Chrome.
-    .attr('width', '1000')
+    // Large pixel width works in Firefox and Chrome, but not Mobile Safari.
+    .attr('width', parentSel.node().parentNode.clientWidth)
     // 100% height works on Firefox, but not on Mobile Safari.
     .attr('height', '5000')
     .append('foreignObject')

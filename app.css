@@ -304,12 +304,14 @@ footer {
 }
 
 .picture {
-  /*! max-width: 30%; */
+  max-width: 100%;
   float: left;
-  margin: 1em;
+  /*! margin: 1em; */
   border-radius: 0.25em;
   box-shadow: 0px 0px 8px 0px hsla(0,0%,0%,0.5);
-  margin-right: 1.5em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  /*! width: -moz-fit-content; */
 }
 
 .paper {

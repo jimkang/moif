@@ -4,6 +4,13 @@ var beatFlow = require('./flows/beat-flow');
 var { version } = require('./package.json');
 var { Tablenest } = require('tablenest');
 var seedrandom = require('seedrandom');
+var OLPE = require('one-listener-per-element');
+
+var { on } = OLPE();
+
+var state = {
+  gp: 0
+};
 
 var routeState = RouteState({
   followRoute,
@@ -22,6 +29,8 @@ function followRoute({ seed, encounterId, beatIds }) {
     seedWithDate();
     return;
   }
+
+  on('#restart-link', 'click', reset);
 
   var random = seedrandom(seed);
 
@@ -48,8 +57,14 @@ function followRoute({ seed, encounterId, beatIds }) {
     encounterId,
     beatIds: decodedBeatIds,
     addToRoute: routeState.addToRoute,
-    random
+    random,
+    state
   });
+}
+
+function reset() {
+  state = { gp: 0 };
+  routeState.overwriteRouteEntirely({});
 }
 
 function seedWithDate() {

@@ -14,21 +14,20 @@ var encounterDict: Record<string, Encounter> = {
   cultistsMeeting
 };
 
-var state = {
-  gp: 0
-};
 var actionLog = [];
 
 async function beatFlow({
   encounterId,
   beatIds,
   addToRoute,
-  random
+  random,
+  state
 }: {
   encounterId: string;
   beatIds: Array<string>;
   addToRoute: (object) => void;
   random: () => void;
+  state: any;
 }) {
   var probable = Probable({ random });
   var encounter: Encounter = encounterDict[encounterId];
@@ -90,21 +89,21 @@ async function beatFlow({
       addToRoute(routeUpdates);
     }
   }
-}
 
-function updateBeat(beat: Beat) {
-  if (beat.playerOptions && beat.playerOptions.choices) {
-    beat.playerOptions.choices = (beat.playerOptions.choices as Array<
-      Choice
-    >).filter(choiceConditionsMet);
-  }
-  // TODO: Also filter freeText
-
-  function choiceConditionsMet(choice: Choice) {
-    if (choice.condition) {
-      return choice.condition({ state });
+  function updateBeat(beat: Beat) {
+    if (beat.playerOptions && beat.playerOptions.choices) {
+      beat.playerOptions.choices = (beat.playerOptions.choices as Array<
+        Choice
+      >).filter(choiceConditionsMet);
     }
-    return true;
+    // TODO: Also filter freeText
+
+    function choiceConditionsMet(choice: Choice) {
+      if (choice.condition) {
+        return choice.condition({ state });
+      }
+      return true;
+    }
   }
 }
 

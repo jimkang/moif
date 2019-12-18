@@ -24,7 +24,8 @@ export function renderBeat({
   if (setupArea.empty()) {
     renderTears = TornEdges({
       parentEl: setupContainer.node(),
-      contentClassName: 'paper'
+      contentClassName: 'paper',
+      pathFill: 'hsl(39.4, 47.1%, 73.3%)'
     });
     setupArea = setupContainer.select('.paper');
   }

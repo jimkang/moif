@@ -17,7 +17,8 @@ export function renderResolution({
   if (resolutionArea.empty()) {
     renderTears = TornEdges({
       parentEl: resolutionContainer.node(),
-      contentClassName: 'paper'
+      contentClassName: 'paper',
+      pathFill: 'hsl(39.4, 47.1%, 73.3%)'
     });
     resolutionArea = resolutionContainer.select('.paper');
   }

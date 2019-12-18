@@ -22,7 +22,10 @@ export function renderBeat({
 }) {
   var setupArea = setupContainer.select('.paper');
   if (setupArea.empty()) {
-    renderTears = TornEdges(setupContainer.node());
+    renderTears = TornEdges({
+      parentEl: setupContainer.node(),
+      contentClassName: 'paper'
+    });
     setupArea = setupContainer.select('.paper');
   }
 

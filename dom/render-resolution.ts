@@ -15,7 +15,10 @@ export function renderResolution({
 }) {
   var resolutionArea = resolutionContainer.select('.paper');
   if (resolutionArea.empty()) {
-    renderTears = TornEdges(resolutionContainer.node());
+    renderTears = TornEdges({
+      parentEl: resolutionContainer.node(),
+      contentClassName: 'paper'
+    });
     resolutionArea = resolutionContainer.select('.paper');
   }
 

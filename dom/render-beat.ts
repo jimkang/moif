@@ -1,7 +1,7 @@
 import { Beat, Choice, FreeText } from '../types';
 var d3 = require('d3-selection');
 var accessor = require('accessor');
-var TornEdges = require('../torn-edges/index');
+var TornEdges = require('@jimkang/torn-edges');
 
 var beatContainer = d3.select('#beat-container');
 var setupContainer = beatContainer.select('.setup-container');

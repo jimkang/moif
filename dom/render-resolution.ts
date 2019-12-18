@@ -1,5 +1,5 @@
 var d3 = require('d3-selection');
-var TornEdges = require('../torn-edges/index');
+var TornEdges = require('@jimkang/torn-edges');
 
 var beatContainer = d3.select('#beat-container');
 var resolutionContainer = beatContainer.select('.resolution-container');

@@ -1,7 +1,7 @@
 {
   "name": "moif",
   "version": "1.0.9",
-  "description": "Slopcube",
+  "description": "Simple choice-based adventures.",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -65,6 +65,7 @@
     "standard-bail": "^2.0.1",
     "strokerouter": "^3.0.0",
     "tablenest": "^4.0.0",
+    "@jimkang/torn-edges": "^2.0.0",
     "tsify": "^4.0.1",
     "typescript": "^3.7.2"
   }

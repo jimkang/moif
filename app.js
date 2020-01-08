@@ -1,11 +1,16 @@
 var handleError = require('handle-error-web');
 var RouteState = require('route-state');
 var beatFlow = require('./flows/beat-flow');
+var adventureSelectionFlow = require('./flows/adventure-selection-flow');
 var { version } = require('./package.json');
 var { Tablenest } = require('tablenest');
 var seedrandom = require('seedrandom');
 var OLPE = require('one-listener-per-element');
+var Crown = require('csscrown');
 
+var crown = Crown({
+  crownClass: 'active-root'
+});
 var { on } = OLPE();
 
 var state = {
@@ -24,9 +29,15 @@ var routeState = RouteState({
   routeState.routeFromHash();
 })();
 
-function followRoute({ seed, encounterId, beatIds }) {
+function followRoute({ seed, advId, encounterId, beatIds }) {
   if (!seed) {
     seedWithDate();
+    return;
+  }
+
+  if (!advId) {
+    crown(document.getElementById('adventure-selection-container-container'));
+    adventureSelectionFlow({ addToRoute: routeState.addToRoute });
     return;
   }
 
@@ -53,6 +64,8 @@ function followRoute({ seed, encounterId, beatIds }) {
     decodedBeatIds = beatIds.split('|').map(decodeURIComponent);
   }
 
+  crown(document.getElementById('adventure-container'));
+
   beatFlow({
     encounterId,
     beatIds: decodedBeatIds,
@@ -60,11 +73,11 @@ function followRoute({ seed, encounterId, beatIds }) {
     random,
     state
   });
-}
 
-function reset() {
-  state = { gp: 0 };
-  routeState.overwriteRouteEntirely({});
+  function reset() {
+    state = { gp: 0 };
+    routeState.overwriteRouteEntirely({ advId });
+  }
 }
 
 function seedWithDate() {

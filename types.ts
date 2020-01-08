@@ -48,3 +48,8 @@ export interface Beat {
 }
 
 export type Encounter = Record<string, Beat>;
+
+export interface Adventure {
+  id: string;
+  name: string;
+}

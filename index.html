@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>The Land of Moif</title>
-    <link rel="stylesheet" href="https://use.typekit.net/jxz3nby.css">
+    <link rel="stylesheet" href="https://use.typekit.net/jxz3nby.css" />
     <link rel="stylesheet" href="app.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,17 +15,25 @@
       Waiting…
     </div>
 
-    <h1>Raven's adventure</h1>
-
-    <section id="beat-container" class="centered-col">
-      <div class="setup-container hidden">
-      </div>
-      <div class="resolution-container hidden"></div>
+    <section
+      id="adventure-selection-container-container"
+      class="top-level-root"
+    >
+      <div class="adventure-selection-container" class="hidden"></div>
     </section>
 
-    <footer class="ui centered-col">
-      <a id="restart-link" class="action-link">Start over</a>
-    </footer>
+    <section id="adventure-container" class="top-level-root">
+      <h1>Raven's adventure</h1>
+
+      <section id="beat-container" class="centered-col">
+        <div class="setup-container hidden"></div>
+        <div class="resolution-container hidden"></div>
+      </section>
+
+      <footer class="ui centered-col">
+        <a id="restart-link" class="action-link">Start over</a>
+      </footer>
+    </section>
 
     <script src="index.js"></script>
   </body>

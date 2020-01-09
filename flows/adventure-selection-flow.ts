@@ -1,13 +1,11 @@
 import { renderAdventureSelection } from '../dom/render-adventure-selection';
-
-var adventures = [
-  { id: 'raven1', name: 'Raven I' },
-  { id: 'raven2', name: 'Raven: Intrigue in the Woods' }
-];
+import { Adventure } from '../types';
 
 async function adventureSelectionFlow({
+  adventures,
   addToRoute
 }: {
+  adventures: Array<Adventure>;
   addToRoute: (object) => void;
 }) {
   renderAdventureSelection({ adventures, onAdventureSelection });

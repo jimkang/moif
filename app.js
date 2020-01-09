@@ -7,6 +7,8 @@ var { Tablenest } = require('tablenest');
 var seedrandom = require('seedrandom');
 var OLPE = require('one-listener-per-element');
 var Crown = require('csscrown');
+var adventures = require('./adventures');
+var findWhere = require('lodash.findwhere');
 
 var crown = Crown({
   crownClass: 'active-root'
@@ -37,9 +39,11 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
 
   if (!advId) {
     crown(document.getElementById('adventure-selection-container-container'));
-    adventureSelectionFlow({ addToRoute: routeState.addToRoute });
+    adventureSelectionFlow({ addToRoute: routeState.addToRoute, adventures });
     return;
   }
+
+  var adventure = findWhere(adventures, { id: advId });
 
   on('#restart-link', 'click', reset);
 
@@ -48,11 +52,7 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
   if (!encounterId) {
     var tablenest = Tablenest({ random });
 
-    var rootEncounterRoll = tablenest({
-      //root: [[1, { encounterId: 'itemMartAnalysts', beatId: 'doorKnock' }]]
-      root: [[1, { encounterId: 'cultistsMeeting', beatId: 'discussion' }]]
-    });
-
+    var rootEncounterRoll = tablenest(adventure.rootTableDef);
     let { encounterId, beatId } = rootEncounterRoll();
     // [ beatId ] serialized just ends up being beatId.
     routeState.addToRoute({ encounterId, beatIds: beatId });

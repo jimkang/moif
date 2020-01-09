@@ -27,14 +27,14 @@ export function renderAdventureSelection({
   var advSelRoot = advSelArea.select('.adventure-selection-root');
 
   var advSelections = advSelRoot
-    .selectAll('.adventure-selection')
+    .selectAll('.choice')
     .data(adventures, accessor());
 
   advSelections.exit().remove();
   advSelections
     .enter()
     .append('li')
-    .classed('adventure-selection', true)
+    .classed('choice', true)
     .merge(advSelections)
     .text(accessor('name'))
     .on('click', onAdvSelClick);

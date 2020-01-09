@@ -52,4 +52,6 @@ export type Encounter = Record<string, Beat>;
 export interface Adventure {
   id: string;
   name: string;
+  // TODO: Consider table def type.
+  rootTableDef: Record<string, Array<any>>;
 }

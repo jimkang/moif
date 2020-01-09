@@ -10,6 +10,8 @@ var Crown = require('csscrown');
 var adventures = require('./adventures');
 var findWhere = require('lodash.findwhere');
 
+var adventureTitleEl = document.getElementById('adventure-title');
+
 var crown = Crown({
   crownClass: 'active-root'
 });
@@ -45,6 +47,7 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
 
   var adventure = findWhere(adventures, { id: advId });
 
+  adventureTitleEl.textContent = adventure.name;
   on('#restart-link', 'click', reset);
   on('#change-adventure-link', 'click', resetAll);
 

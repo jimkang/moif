@@ -28,3 +28,6 @@ sync:
 
 deploy:
 	npm version patch && make build && git commit -a -m"Build." && make pushall
+
+encounters-index:
+	node tools/build-encounter-dict.js --encounterDir encounters > encounters/index.ts

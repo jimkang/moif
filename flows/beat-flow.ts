@@ -5,14 +5,7 @@ var Probable = require('probable').createProbable;
 import { sendEncounter } from '../tasks/send-encounter';
 var ep = require('errorback-promise');
 
-// TODO: Tool to build this dict.
-import { itemMartAnalysts } from '../encounters/item-mart-analysts';
-import { cultistsMeeting } from '../encounters/cultists-meeting';
-
-var encounterDict: Record<string, Encounter> = {
-  itemMartAnalysts,
-  cultistsMeeting
-};
+import { encounterDict } from '../encounters';
 
 var actionLog = [];
 

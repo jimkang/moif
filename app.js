@@ -46,6 +46,7 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
   var adventure = findWhere(adventures, { id: advId });
 
   on('#restart-link', 'click', reset);
+  on('#change-adventure-link', 'click', resetAll);
 
   var random = seedrandom(seed);
 
@@ -77,6 +78,11 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
   function reset() {
     state = { gp: 0 };
     routeState.overwriteRouteEntirely({ advId });
+  }
+
+  function resetAll() {
+    state = { gp: 0 };
+    routeState.overwriteRouteEntirely({});
   }
 }
 

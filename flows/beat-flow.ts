@@ -65,6 +65,9 @@ async function beatFlow({
     actionLog.push(result);
     console.log('actionLog', JSON.stringify(actionLog, null, 2));
 
+    updateBeat(beat);
+    renderBeat({ beat, onPlayerAction });
+
     if (result.resolutionText) {
       renderResolution({
         resolutionText: result.resolutionText,

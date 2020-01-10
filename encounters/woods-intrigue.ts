@@ -1,4 +1,4 @@
-import { Beat, NextResult } from '../types';
+import { Beat } from '../types';
 
 export var woodsIntrigue: Record<string, Beat> = {
   gooseGnomeStandoff: {
@@ -62,6 +62,30 @@ export var woodsIntrigue: Record<string, Beat> = {
 <p>"We found this nervous gnome! He had a thing! We took its thing!" honks one goose.</p>
 <p>"Yeah!" honks another goose.</p>
 <p>"HELLS YEAH!" honks the third goose.</p>`
+            };
+          }
+        },
+        {
+          id: 'charmGnome',
+          desc:
+            'Cast Charm Person or Mammal on the gnome Ewmis (he gets a save and will notice you casting)',
+          oneTime: true,
+          next({ probable, state }) {
+            const ewmisMadeSave = probable.roll(20) >= 16;
+            var resolutionText;
+
+            if (ewmisMadeSave) {
+              state.ewmisNoticedSpellCasting = true;
+              resolutionText =
+                "The gnomes' brows furrow with suspicion. They whisper to each other. The geese honk.";
+            } else {
+              state.ewmisCharmed = true;
+              resolutionText =
+                "The gnomes' brows furrow with suspicion, except for Ewmis who relaxes and smiles for the first time you've seen. The geese honk.";
+            }
+            return {
+              beatId: 'gooseGnomeStandoff',
+              resolutionText
             };
           }
         }

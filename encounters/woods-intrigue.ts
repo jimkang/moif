@@ -28,10 +28,14 @@ export var woodsIntrigue: Record<string, Beat> = {
           id: 'giveToGeese',
           desc:
             'Pick up the spike and give it to the geese. "You are right to protect the earth from this spike. Here is your reward."',
-          next({ state }): NextResult {
+          next({ state }) {
             state.spikeOwner = 'goose';
             // TODO: Resolution text
-            return { beatId: 'sulk' };
+            return {
+              beatId: 'sulk',
+              resolutionText: `"HONK!" The geese flap righteously and carry the spike off into the skies.
+<p>The red-hatted gnome stares in shock for a moment. His comrades pull him away. "C'mon, Ewmis. We can get another spike back in town. Besides, we weren't actually going to camp here another night, anyway."</p>`
+            };
           }
         },
         {

@@ -78,7 +78,7 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
     addToRoute: routeState.addToRoute,
     random,
     state,
-    actionLog: actionLogs[actionLogs.length - 1]
+    actionLogs
   });
 
   function reset() {

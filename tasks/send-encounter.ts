@@ -9,17 +9,17 @@ export function sendEncounter(
     encounterId,
     beatIds,
     state,
-    actionLog
+    actionLogs
   }: {
     encounterId: string;
     beatIds: Array<string>;
     state: any;
-    actionLog: Array<any>;
+    actionLogs: Array<Array<any>>;
   },
   done: (Error, any) => void
 ) {
   const message = JSON.stringify(
-    { encounterId, state, beatIds, actionLog },
+    { encounterId, state, beatIds, actionLogs },
     null,
     2
   );
@@ -34,7 +34,7 @@ export function sendEncounter(
       'Content-Type': 'application/json'
     },
     body: {
-      caption: message
+      caption: `<pre>${message}</pre>`
     }
   };
   request(reqOpts, bodyMover(done));

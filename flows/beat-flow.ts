@@ -15,15 +15,16 @@ async function beatFlow({
   addToRoute,
   random,
   state,
-  actionLog
+  actionLogs
 }: {
   encounterId: string;
   beatIds: Array<string>;
   addToRoute: (object) => void;
   random: () => void;
   state: any;
-  actionLog: Array<any>;
+  actionLogs: Array<Array<any>>;
 }) {
+  var actionLog = actionLogs[actionLogs.length - 1];
   var probable = Probable({ random });
   var encounter: Encounter = encounterDict[encounterId];
   var beat: Beat = cloneDeep(encounter[beatIds[beatIds.length - 1]]);
@@ -36,7 +37,7 @@ async function beatFlow({
       encounterId,
       beatIds,
       state,
-      actionLog
+      actionLogs
     });
     let resolutionText =
       'End of encounter. Your feats were sent to the DM! Nice work.';

@@ -5,52 +5,60 @@ export var woodsIntrigue: Record<string, Beat> = {
     id: 'gooseGnomeStandoff',
     img: 'media/geesevgnomes.png',
     imgAlt: 'A bunch of geese, a bunch of gnomes, a bunch of bad vibes',
-    desc: `Fred and Joe from Item Mart are at the door of your inn room!
-          <p>They describe themselves as Growth Opportunity Analysts. They are interested in your experiences with the Temple of Elemental Evil.
-          <p>They mention that they want to pay you a 50 gp consulting fee.</p>`,
-    question: 'What do you do?',
+    desc: `<p>Walking through the woods at night, as a goth druid is wont to do, you come across an unusual commotion.</p>
+<p>A group of geese and a group of gnomes are yelling at each other and taking threatening postures. It seems as though a large brown spike between them is at the center of the dispute.</p>
+<p>As you approach, they turn to you.</p>
+<p>"Good warden of the woods! This foul goose dug up my spike and won't leave it be!" cries a gnome in a red hat. "Yeah, Ewmis was just doing some spiking, then he hollered because these geese beset him!" adds the gnome in the green hat. "Why were you spiking, anyway, Ewmis?" inquires the third gnome, who is ignored.</p>
+<p>"HONK!" honk the geese, as they flap furiously.</p>
+`,
+    question: 'They all look at you expectantly.',
     playerOptions: {
       choices: [
         {
-          id: 'goAway',
-          desc: 'Tell them to go away.',
-          condition({ state }) {
-            return !state.paymentAccepted;
-          },
+          id: 'giveToGnomes',
+          desc:
+            'Pick up the spike and hand it to the gnome Ewmis. "You are the rightful spike holder."',
           next({ state }) {
-            state.itemMartAgentsDismissed = true;
+            state.spikeOwner = 'ewmis';
+            // TODO: Resolution text
             return { beatId: 'sulk' };
           }
         },
         {
-          id: 'askFor100',
-          desc: 'Ask for 100 gp.',
-          condition({ state }) {
-            return !state.itemMartHagglingDone;
-          },
-          next({ state, probable }): NextResult {
-            state.itemMartHagglingDone = true;
-            const check = probable.rollDie(20);
-            var resolutionText = `[CHA check: ${check}]`;
-            var nextBeatId = 'doorKnock';
-            if (check <= 15) {
-              state.gp += 100;
-              resolutionText += ' They give you 100 gp.';
-              state.paymentAccepted = true;
-              nextBeatId = 'scouting';
-            } else {
-              resolutionText += ' "Sorry. That\'s not in our budget."';
-            }
-            return { beatId: nextBeatId, resolutionText };
+          id: 'giveToGeese',
+          desc:
+            'Pick up the spike and give it to the geese. "You are right to protect the earth from this spike. Here is your reward."',
+          next({ state }): NextResult {
+            state.spikeOwner = 'goose';
+            // TODO: Resolution text
+            return { beatId: 'sulk' };
           }
         },
         {
-          id: 'inviteIn',
-          desc: 'Invite them in.',
-          next({ state }) {
-            var resolutionText = 'They give you 50 gp.';
-            state.gp += 50;
-            return { beatId: 'scouting', resolutionText };
+          id: 'askGnomeAboutSpike',
+          desc: 'Ask the gnome what he was doing with the spike.',
+          oneTime: true,
+          next() {
+            return {
+              beatId: 'gooseGnomeStandoff',
+              resolutionText:
+                '<p>"Well, I couldn\'t sleep, and I was just trying to find a good site for our tents for tomorrow," replies the gnome Ewmis.</p><p>The gnome in the blue hat seems nonplussed.</p>'
+            };
+          }
+        },
+        {
+          id: 'speakWithGeese',
+          desc:
+            'Cast Speak with Animals, then ask the geese why they want the spike.',
+          oneTime: true,
+          next() {
+            return {
+              beatId: 'gooseGnomeStandoff',
+              resolutionText: `<em>You cast the spell, and the honks become imbued with meaning.</em>
+<p>"We found this nervous gnome! He had a thing! We took its thing!" honks one goose.</p>
+<p>"Yeah!" honks another goose.</p>
+<p>"HELLS YEAH!" honks the third goose.</p>`
+            };
           }
         }
       ]

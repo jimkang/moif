@@ -22,6 +22,7 @@ export interface Choice {
   desc: string;
   next: NextFn;
   condition?: ConditionFn;
+  oneTime?: boolean;
 }
 
 export interface FreeText {

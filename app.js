@@ -21,6 +21,8 @@ var state = {
   gp: 0
 };
 
+var actionLogs = [[]];
+
 var routeState = RouteState({
   followRoute,
   windowObject: window,
@@ -75,16 +77,19 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
     beatIds: decodedBeatIds,
     addToRoute: routeState.addToRoute,
     random,
-    state
+    state,
+    actionLog: actionLogs[actionLogs.length - 1]
   });
 
   function reset() {
     state = { gp: 0 };
+    actionLogs.push([]);
     routeState.overwriteRouteEntirely({ advId });
   }
 
   function resetAll() {
     state = { gp: 0 };
+    actionLogs.push([]);
     routeState.overwriteRouteEntirely({});
   }
 }

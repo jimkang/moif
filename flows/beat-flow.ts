@@ -4,27 +4,29 @@ import { renderResolution } from '../dom/render-resolution';
 var Probable = require('probable').createProbable;
 import { sendEncounter } from '../tasks/send-encounter';
 var ep = require('errorback-promise');
+var findWhere = require('lodash.findwhere');
+var cloneDeep = require('lodash.clonedeep');
 
 import { encounterDict } from '../encounters';
-
-var actionLog = [];
 
 async function beatFlow({
   encounterId,
   beatIds,
   addToRoute,
   random,
-  state
+  state,
+  actionLog
 }: {
   encounterId: string;
   beatIds: Array<string>;
   addToRoute: (object) => void;
   random: () => void;
   state: any;
+  actionLog: Array<any>;
 }) {
   var probable = Probable({ random });
   var encounter: Encounter = encounterDict[encounterId];
-  var beat: Beat = encounter[beatIds[beatIds.length - 1]];
+  var beat: Beat = cloneDeep(encounter[beatIds[beatIds.length - 1]]);
   updateBeat(beat);
 
   renderBeat({ beat, onPlayerAction });
@@ -92,6 +94,11 @@ async function beatFlow({
     // TODO: Also filter freeText
 
     function choiceConditionsMet(choice: Choice) {
+      if (choice.oneTime) {
+        if (findWhere(actionLog, { id: choice.id })) {
+          return false;
+        }
+      }
       if (choice.condition) {
         return choice.condition({ state });
       }

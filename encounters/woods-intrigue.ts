@@ -42,11 +42,21 @@ export var woodsIntrigue: Record<string, Beat> = {
           id: 'askGnomeAboutSpike',
           desc: 'Ask the gnome what he was doing with the spike.',
           oneTime: true,
-          next() {
+          next({ state }) {
+            var resolutionText;
+            if (state.ewmisCharmed) {
+              resolutionText = `<p>Ewmis grins. "Glad you asked! Well, I just joined this new group called OmniMud. They're really going to change things around here, I think! Right now, no one in one part of the woods knows anything about things going on in other parts of the woods or in the Temple, right? Well, when you join OmniMud, you do get to know. For example, I found out that Olonka takes the herbs we gather over to Nulb and sells them to crones for twenty times what she pays us.</p>
+<p>"All I have to do is take a spike from Ourtram, my new life coach over at OmniMud, and then bury them over by that one rock [he points to a nearby boulder] each week."</p>
+<p>This all looks like news to the other gnomes. The gnome in the blue hat protests, "But what about finding good spots for the tent?"</p>
+<p>"Well, I wasn't sure if you were ready for the OmniMud Way yet, so that was what we call a 'Truth Primer.'"</p>`;
+              state.ewmisRevealedOmniMud = true;
+            } else {
+              resolutionText =
+                '<p>"Well, I couldn\'t sleep, and I was just trying to find a good site for our tents for tomorrow," replies the gnome Ewmis.</p><p>The gnome in the blue hat seems nonplussed.</p>';
+            }
             return {
               beatId: 'gooseGnomeStandoff',
-              resolutionText:
-                '<p>"Well, I couldn\'t sleep, and I was just trying to find a good site for our tents for tomorrow," replies the gnome Ewmis.</p><p>The gnome in the blue hat seems nonplussed.</p>'
+              resolutionText
             };
           }
         },

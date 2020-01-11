@@ -209,15 +209,37 @@ export var woodsIntrigue: Record<string, Beat> = {
               resolutionText: `<p>The brown spike is perfectly cylindrical, except at its point and at the cap, which you now notice twists off.</p>
 <p>Inside, you find the following:</p>
 <ul>
-<li>A cube made of hardened mud. On one side, there is an etching of two wavy circles that overlap each other.</li>
-<li>A note that reads <em>🐐 -> 🗣️ "It is time to reap"</em></li>
-<li>A note that reads <em>🔴 -> 🗣️ "Continue to sow"</em></li>
+<li>A cube made of hardened mud. On one side, there is an etching of two wavy circles that overlap each other. <img alt="wavy circles" src="media/wavy-circles.jpg"></li>
+<li>A note that reads "<em>🐐 -> 🗣️ It is time to reap</em>"</li>
+<li>A note that reads "<em>🔴 -> 🗣️ Continue to sow</em>"</li>
 <li>A map to a particular tree in the woods</li>
 </ul>`
             };
           }
+        },
+        {
+          id: 'toTrail',
+          desc: 'Walk away along the trail.',
+          next() {
+            return {
+              beatId: 'trail',
+              resolutionText: 'You decide you have had enough of this scene.'
+            };
+          }
+        },
+        {
+          id: 'toMarkedTree',
+          desc: 'Walk to the tree indicated on the map.',
+          condition({ state }) {
+            return state.hasMapToHollow;
+          },
+          next() {
+            return {
+              beatId: 'hollow',
+              resolutionText: 'You set off, following the map.'
+            };
+          }
         }
-        // TODO: examineSpike, go somewhere else choices.
       ]
     }
   },

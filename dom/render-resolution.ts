@@ -38,6 +38,8 @@ export function renderResolution({
 
   renderTears();
 
+  setTimeout(() => resolutionDiv.node().scrollIntoView(), 300);
+
   function onAcknowledgeClick() {
     resolutionContainer.classed('hidden', true);
     onAcknowledge();

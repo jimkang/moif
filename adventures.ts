@@ -6,6 +6,12 @@ var adventures: Array<Adventure> = [
     name: "Raven's Adventure I",
     rootTableDef: {
       root: [[1, { encounterId: 'cultistsMeeting', beatId: 'discussion' }]]
+    },
+    initialState: {
+      hp: 27,
+      gp: 126,
+      str: 6,
+      cha: 16
     }
   },
   {
@@ -15,6 +21,11 @@ var adventures: Array<Adventure> = [
       root: [
         [1, { encounterId: 'woodsIntrigue', beatId: 'gooseGnomeStandoff' }]
       ]
+    },
+    initialState: {
+      hp: 27,
+      gp: 126,
+      cha: 16
     }
   }
 ];

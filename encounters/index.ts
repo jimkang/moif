@@ -9,4 +9,3 @@ export var encounterDict: Record<string, Encounter> = {
   itemMartAnalysts,
   woodsIntrigue
 };
-

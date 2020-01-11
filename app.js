@@ -17,10 +17,6 @@ var crown = Crown({
 });
 var { on } = OLPE();
 
-var state = {
-  gp: 0
-};
-
 var actionLogs = [[]];
 
 var routeState = RouteState({
@@ -48,6 +44,9 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
   }
 
   var adventure = findWhere(adventures, { id: advId });
+  if (!adventure.state) {
+    resetAdventureState(adventure);
+  }
 
   adventureTitleEl.textContent = adventure.name;
   on('#restart-link', 'click', reset);
@@ -77,21 +76,25 @@ function followRoute({ seed, advId, encounterId, beatIds }) {
     beatIds: decodedBeatIds,
     addToRoute: routeState.addToRoute,
     random,
-    state,
+    state: adventure.state,
     actionLogs
   });
 
   function reset() {
-    state = { gp: 0 };
+    resetAdventureState(adventure);
     actionLogs.push([]);
     routeState.overwriteRouteEntirely({ advId });
   }
 
   function resetAll() {
-    state = { gp: 0 };
+    resetAdventureState(adventure);
     actionLogs.push([]);
     routeState.overwriteRouteEntirely({});
   }
+}
+
+function resetAdventureState(adventure) {
+  adventure.state = Object.assign({}, adventure.initialState);
 }
 
 function seedWithDate() {

@@ -55,4 +55,6 @@ export interface Adventure {
   name: string;
   // TODO: Consider table def type.
   rootTableDef: Record<string, Array<any>>;
+  initialState: Record<string, any>;
+  state?: Record<string, any>;
 }

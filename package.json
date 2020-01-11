@@ -1,6 +1,6 @@
 {
   "name": "moif",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Simple choice-based adventures.",
   "main": "index.js",
   "private": true,

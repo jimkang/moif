@@ -1,5 +1,18 @@
 import { Beat } from '../types';
 
+//var toMarkedTreeChoice = {
+//id: 'toMarkedTree',
+//desc: 'Walk to the tree indicated on the map from the spike.',
+//condition({ state }) {
+//return state.hasMapToHollow;
+//},
+//next() {
+//return {
+//beatId: 'hollow'
+//};
+//}
+//};
+
 export var woodsIntrigue: Record<string, Beat> = {
   gooseGnomeStandoff: {
     id: 'gooseGnomeStandoff',
@@ -175,8 +188,9 @@ export var woodsIntrigue: Record<string, Beat> = {
           condition({ state }) {
             return !state.gnomesLeft;
           },
-          next({ probable, state }) {
-            const ewmisMadeSave = probable.roll(20) >= 16;
+          next({ state }) {
+            // It's not that interesting when he makes his save.
+            const ewmisMadeSave = false; //probable.roll(20) >= 16;
             var resolutionText;
 
             if (ewmisMadeSave) {
@@ -194,146 +208,94 @@ export var woodsIntrigue: Record<string, Beat> = {
             };
           }
         },
-        {
-          id: 'examineSpike',
-          desc: 'Examine the spike.',
-          condition({ state }) {
-            return state.spikeOwner === 'pc';
-          },
-          next({ state }) {
-            state.spikeExamined = true;
-            state.hasCube = true;
-            state.hasMapToHollow = true;
-            return {
-              beatId: 'gooseGnomeStandoff',
-              resolutionText: `<p>The brown spike is perfectly cylindrical, except at its point and at the cap, which you now notice twists off.</p>
-<p>Inside, you find the following:</p>
-<ul>
-<li>A cube made of hardened mud. On one side, there is an etching of two wavy circles that overlap each other. <img alt="wavy circles" src="media/wavy-circles.jpg"></li>
-<li>A note that reads "<em>🐐 -> 🗣️ It is time to reap</em>"</li>
-<li>A note that reads "<em>🔴 -> 🗣️ Continue to sow</em>"</li>
-<li>A map to a particular tree in the woods</li>
-</ul>`
-            };
-          }
-        },
+        ExamineSpikeChoice('gooseGnomeStandoff'),
         {
           id: 'toTrail',
           desc: 'Walk away along the trail.',
           next() {
             return {
-              beatId: 'trail',
-              resolutionText: 'You decide you have had enough of this scene.'
+              beatId: 'boulderPond'
             };
           }
         },
+        //toMarkedTreeChoice,
         {
-          id: 'toMarkedTree',
-          desc: 'Walk to the tree indicated on the map.',
+          id: 'toBoulder',
+          desc: 'Walk to the boulder on the pond that Ewmis described.',
           condition({ state }) {
-            return state.hasMapToHollow;
+            return state.boulderOnPondKnown;
           },
           next() {
             return {
-              beatId: 'hollow',
-              resolutionText: 'You set off, following the map.'
+              beatId: 'boulderPond'
             };
           }
         }
       ]
     }
   },
-  end: {
-    id: 'end',
-    desc: 'You go back to sleep. The end.'
+  writeSpikeNotes: {
+    id: 'writeSpikeNotes',
+    desc: `<p>You take some paper and a quill from your pack to write new notes to replace the notes in the spike.</p>
+<p>The original notes were:</p>
+<ul>
+<li>"<em>🐐 -> 🗣️ It is time to reap</em>"</li>
+<li>"<em>🔴 -> 🗣️ Continue to sow</em>"</li>
+<li>"<em>🧙: 💀</em>"</li>
+<li>"<em>🧝: 💀??</em>"</li>
+</ul>`,
+    question: 'What do you write in your notes?',
+    playerOptions: {
+      freeText: {
+        id: 'spikeNotesText',
+        hint: 'Write down what the new notes should say here.',
+        next() {
+          return { beatId: 'boulderPond' };
+        }
+      }
+    }
   },
-  scouting: {
-    id: 'scouting',
-    desc: `"We've seen that the Temple is a popular destination for high income individuals! At the same time, the supply of convenience &mdash; and luxury &mdash; goods is low," Fred explains.
-<p>Joe continues "Now, Mogredh, you and your team have spent considerable time scouting the Temple. We're very excited about the unique perspective you have as a Temple SME with a background at Item Mart as a 
-<em>[glances at paper]</em>
-Service Associate I."</p>
-<p>"We're going to put a feeler out into this market by running a kiosk for a week!</p>`,
-    question:
-      '"As an expert on the Temple and convenience markets, where do you think we should set up our kiosk in order to optimize for both traffic and safety?"',
+  boulderPond: {
+    id: 'boulderPond',
+    desc: `<p>You make your way to a pond with a prominent boulder next to it. Next to that prominent boulder are signs of a struggle. There are small bloodstains on the boulder, divots in the grass, and large feathers.</p>
+<p>There is a 1" diameter hole in the ground amidst the scuffle signs.</p>`,
+    question: 'What do you do?',
     playerOptions: {
       choices: [
+        ExamineSpikeChoice('boulderPond'),
         {
-          id: 'outsideKiosk',
-          desc: 'Close to the Temple, but not inside of it.',
+          id: 'replaceSpikeNotesText',
+          condition({ state }) {
+            return state.spikeOwner === 'pc' && state.spikeExamined === true;
+          },
+          desc: 'Replace the notes in the spike.',
           next() {
-            return { beatId: 'stock' };
+            return { beatId: 'writeSpikeNotes' };
           }
         },
         {
-          id: 'firstFloorKiosk',
-          desc: 'In the grand hall on the ground floor.',
-          next() {
-            return { beatId: 'stock' };
-          }
-        },
-        {
-          id: 'dungeonLevel1Kiosk',
-          desc: 'The first underground level of the Temple.',
-          next() {
-            return { beatId: 'stock' };
+          id: 'dropSpike',
+          condition({ state }) {
+            return state.spikeOwner === 'pc';
+          },
+          oneTime: true,
+          desc: 'Drive the spike into the hole.',
+          next({ state }) {
+            state.spikeOwner = 'agent';
+            return {
+              beatId: state.hasMapToHollow ? 'boulderPond' : 'endWoods',
+              resolutionText: 'It fits perfectly.'
+            };
           }
         }
+        //toMarkedTreeChoice
       ]
     }
   },
-  stock: {
-    id: 'stock',
-    desc: `"We have a budget of 300 gp for this venture. We'd love to get your opinion on spend prioritization!"
-    <p>Fred holds unrolls the budget scroll, which reads as follows:</p>
-<ul>
-  <li>Climbing supply box (ropes, spikes, grappling hooks): 20 gp</li>
-  <li>Lighting box (lanterns, torches, oil, tinder kits): 10 gp</li>
-  <li>Ammo box (flight arrows, quarrels, and darts): 10 gp</li>
-  <li>Potion of Healing: 200 gp (retail for 300 gp)</li>
-  <li>Worg Juice keg: 50 gp</li>
-  <li>Dry rations (100) box: 50 gp</li>
-  <li>Fully closeable and lockable kiosk upgrade: 100 gp</li>
-  <li>Guard: 30 gp each</li>
-  <li>Cleric: 225 gp</li>
-  <li>Elite guard: 150 gp</li>
-</ul>`,
-    question: 'How should we budget this?',
-    playerOptions: {
-      freeText: {
-        id: 'kioskBudget',
-        hint: 'Write your budget recommendation here.',
-        next() {
-          return { beatId: 'consignment' };
-        }
-      }
-    }
-  },
-  consignment: {
-    id: 'consignment',
-    desc: '"BTW, we have a consignment slot open at the kiosk!"',
-    question: '"Is there anything you\'d like to sell? Item Mart takes 20%."',
-    playerOptions: {
-      freeText: {
-        id: 'consignmentItem',
-        hint:
-          "Write down what you'd like to give to them to sell and at what price.",
-        next() {
-          return { beatId: 'analystGoodbye' };
-        }
-      }
-    }
-  },
-  analystGoodbye: {
-    id: 'analystGoodbye',
-    desc: `"It was a pleasure working with you, Mogredh. We'll let you know how things pan out with the kiosk. And if things don't work out with the "adventuring", there may be an opportunity for you in Management in this region very soon [wink]!"
-<p>With that, Fred and Joe roll up their papers and head out with an optimistic swagger.</p>`,
-    endOfEncounter: true
-  },
-  sulk: {
-    id: 'sulk',
+  endWoods: {
+    id: 'endWoods',
     desc:
-      "You shut the door and go back to sulking. It's a good sulk. The end.",
+      'Satisfied that your business in the woods has concluded tonight, you head back to Nulb.',
     endOfEncounter: true
   }
 };
@@ -355,4 +317,32 @@ function runGnomeBattle(state, probable) {
   }
 
   return { resolutionText };
+}
+
+function ExamineSpikeChoice(originBeatId) {
+  return {
+    id: 'examineSpike',
+    desc: 'Examine the spike.',
+    condition({ state }) {
+      return state.spikeOwner === 'pc';
+    },
+    next({ state }) {
+      state.spikeExamined = true;
+      state.hasCube = true;
+      //state.hasMapToHollow = true;
+      return {
+        beatId: originBeatId, // TODO: Support a generic 'return to origin' kinda thing.
+        resolutionText: `<p>The brown spike is perfectly cylindrical, except at its point and at the cap, which you now notice twists off.</p>
+<p>Inside, you find the following:</p>
+<ul>
+<li>A cube made of hardened mud. On one side, there is an etching of two wavy circles that overlap each other. <img alt="wavy circles" src="media/wavy-circles.jpg"></li>
+<li>A note that reads "<em>🐐 -> 🗣️ It is time to reap</em>"</li>
+<li>A note that reads "<em>🔴 -> 🗣️ Continue to sow</em>"</li>
+<li>A note that reads "<em>🧙: 💀</em>"</li>
+<li>A note that reads "<em>🧝: 💀??</em>"</li>
+<!--<li>A map to a particular tree in the woods</li>-->
+</ul>`
+      };
+    }
+  };
 }

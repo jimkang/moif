@@ -90,12 +90,21 @@ async function beatFlow({
   }
 
   function updateBeat(beat: Beat) {
-    if (beat.playerOptions && beat.playerOptions.choices) {
-      beat.playerOptions.choices = (beat.playerOptions.choices as Array<
-        Choice
-      >).filter(choiceConditionsMet);
+    if (beat.playerOptions) {
+      if (beat.playerOptions.choices) {
+        beat.playerOptions.choices = (beat.playerOptions.choices as Array<
+          Choice
+        >).filter(choiceConditionsMet);
+      }
+      if (
+        beat.playerOptions.freeText &&
+        beat.playerOptions.freeText.condition
+      ) {
+        if (!beat.playerOptions.freeText.condition(state)) {
+          delete beat.playerOptions.freeText;
+        }
+      }
     }
-    // TODO: Also filter freeText
 
     function choiceConditionsMet(choice: Choice) {
       if (choice.oneTime) {

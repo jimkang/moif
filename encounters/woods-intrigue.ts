@@ -93,9 +93,14 @@ export var woodsIntrigue: Record<string, Beat> = {
             } else if (chaCheckRoll <= state.cha - 3) {
               resolutionText +=
                 ' The geese back off as you quietly take possession of the spike, but the gnomes take up arms.';
-              let result = runGnomeBattle(state, probable);
-              resolutionText += result.resolutionText;
-            } else {
+              if (state.ewmisCharmed) {
+                resolutionText +=
+                  "<p>But then, Ewmis steps up and says, hey, guys, don't worry. I think she's OK.</p>";
+              } else {
+                let result = runGnomeBattle(state, probable);
+                resolutionText += result.resolutionText;
+              }
+            } else if (!state.ewmisCharmed) {
               resolutionText +=
                 ' All parties are not OK with that! The gnomes take up arms, and the geese fly at you!';
               const battleWonUnscathed: boolean =
@@ -186,6 +191,29 @@ export var woodsIntrigue: Record<string, Beat> = {
             return {
               beatId: 'gooseGnomeStandoff',
               resolutionText
+            };
+          }
+        },
+        {
+          id: 'examineSpike',
+          desc: 'Examine the spike.',
+          condition({ state }) {
+            return state.spikeOwner === 'pc';
+          },
+          next({ state }) {
+            state.spikeExamined = true;
+            state.hasCube = true;
+            state.hasMapToHollow = true;
+            return {
+              beatId: 'gooseGnomeStandoff',
+              resolutionText: `<p>The brown spike is perfectly cylindrical, except at its point and at the cap, which you now notice twists off.</p>
+<p>Inside, you find the following:</p>
+<ul>
+<li>A cube made of hardened mud. On one side, there is an etching of two wavy circles that overlap each other.</li>
+<li>A note that reads <em>🐐 -> 🗣️ "It is time to reap"</em></li>
+<li>A note that reads <em>🔴 -> 🗣️ "Continue to sow"</em></li>
+<li>A map to a particular tree in the woods</li>
+</ul>`
             };
           }
         }
